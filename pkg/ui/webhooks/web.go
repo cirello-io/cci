@@ -29,8 +29,8 @@ import (
 	"time"
 
 	"cirello.io/cci/pkg/coordinator"
+	"cirello.io/cci/pkg/errors"
 	"cirello.io/cci/pkg/models"
-	"cirello.io/errors"
 )
 
 // Server implements the webhooks part of the CI service. For now, compatible

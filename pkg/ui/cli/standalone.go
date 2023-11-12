@@ -16,6 +16,7 @@ package cli
 
 import (
 	"context"
+	"fmt"
 	"net"
 	"os"
 	"os/user"
@@ -23,12 +24,12 @@ import (
 	"sync"
 
 	"cirello.io/cci/pkg/coordinator"
+	"cirello.io/cci/pkg/errors"
 	"cirello.io/cci/pkg/infra/repositories"
 	"cirello.io/cci/pkg/models"
 	"cirello.io/cci/pkg/ui/dashboard"
 	"cirello.io/cci/pkg/ui/webhooks"
 	"cirello.io/cci/pkg/worker"
-	"cirello.io/errors"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -74,7 +75,7 @@ func (m *standaloneMode) buildsDir() string {
 func (m *standaloneMode) loadConfiguration() models.Configuration {
 	fd, err := os.Open("cci-config.yaml")
 	if err != nil {
-		m.setError(errors.E("cannot open configuration file"))
+		m.setError(fmt.Errorf("cannot open configuration file"))
 		return nil
 	}
 	configuration, err := models.LoadConfiguration(fd)

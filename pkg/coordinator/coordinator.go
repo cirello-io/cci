@@ -22,14 +22,15 @@ import (
 	"crypto/sha1"
 	"database/sql"
 	"encoding/hex"
+	"fmt"
 	"log"
 	"strings"
 	"sync"
 	"time"
 
+	"cirello.io/cci/pkg/errors"
 	"cirello.io/cci/pkg/infra/repositories"
 	"cirello.io/cci/pkg/models"
-	"cirello.io/errors"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -138,11 +139,11 @@ func (c *Coordinator) Enqueue(repoFullName, commitHash, commitMessage,
 	}
 	recipe, ok := c.configuration[b.RepoFullName]
 	if !ok {
-		return errors.Errorf("cannot find recipe for %s", b.RepoFullName)
+		return fmt.Errorf("cannot find recipe for %s", b.RepoFullName)
 	}
 	if recipe.GithubSecret != "" &&
 		!isValidSecret(sig, []byte(recipe.GithubSecret), body) {
-		return errors.E("invalid signature")
+		return fmt.Errorf("invalid signature")
 	}
 	b.Recipe = &recipe
 	c.in <- b
@@ -171,7 +172,7 @@ func (c *Coordinator) Next(repoFullName string) <-chan *models.Build {
 // MarkInProgress determines a build has started and update its build
 // information in the database.
 func (c *Coordinator) MarkInProgress(build *models.Build) error {
-	err := errors.E(c.buildDAO.MarkInProgress(build))
+	err := c.buildDAO.MarkInProgress(build)
 	c.setError(err)
 	return err
 }
@@ -179,7 +180,7 @@ func (c *Coordinator) MarkInProgress(build *models.Build) error {
 // MarkComplete determines a build has completed and update its build
 // information in the database.
 func (c *Coordinator) MarkComplete(build *models.Build) error {
-	err := errors.E(c.buildDAO.MarkComplete(build))
+	err := c.buildDAO.MarkComplete(build)
 	c.setError(err)
 	return err
 }

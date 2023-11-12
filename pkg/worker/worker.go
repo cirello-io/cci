@@ -26,10 +26,10 @@ import (
 	"strings"
 
 	"cirello.io/cci/pkg/coordinator"
+	"cirello.io/cci/pkg/errors"
 	"cirello.io/cci/pkg/infra/git"
 	"cirello.io/cci/pkg/infra/slack"
 	"cirello.io/cci/pkg/models"
-	"cirello.io/errors"
 )
 
 // Start the builders.

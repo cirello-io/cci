@@ -12,27 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package models
+// Package errors replaces the deprecated cirello.io/errors.
+package errors // import "cirello.io/cci/pkg/errors"
 
 import (
-	"io"
-
-	"cirello.io/cci/pkg/errors"
-	yaml "gopkg.in/yaml.v2"
+	"errors"
+	"fmt"
 )
 
-// Configuration defines the internal parameters for the application.
-type Configuration map[string]Recipe
-
-// LoadConfiguration loads a given fd with YAML content into Configuration.
-func LoadConfiguration(r io.Reader) (Configuration, error) {
-	var c Configuration
-	err := yaml.NewDecoder(r).Decode(&c)
-	for k, v := range c {
-		if v.Concurrency == 0 {
-			v.Concurrency = 1
-			c[k] = v
-		}
+func E(err error, msg string, v ...any) error {
+	if err == nil {
+		return nil
 	}
-	return c, errors.E(err, "cannot parse configuration")
+	return fmt.Errorf(msg+": %w", append(v, err)...)
+}
+
+func RootCause(err error) error {
+	for {
+		e := errors.Unwrap(err)
+		if e == nil {
+			return e
+		}
+		err = e
+	}
 }

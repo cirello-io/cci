@@ -22,7 +22,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"cirello.io/errors"
+	"cirello.io/cci/pkg/errors"
 )
 
 // Sends a message to a given Slack webhook.

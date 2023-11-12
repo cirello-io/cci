@@ -23,8 +23,8 @@ import (
 	"os/exec"
 	"strings"
 
+	"cirello.io/cci/pkg/errors"
 	"cirello.io/cci/pkg/models"
-	"cirello.io/errors"
 )
 
 const execScript = `#!/bin/bash
@@ -37,8 +37,7 @@ set -e
 func run(ctx context.Context, recipe *models.Recipe, repoDir, baseDir string) (string, error) {
 	tmpfile, err := ioutil.TempFile(repoDir, "agent")
 	if err != nil {
-		return "", errors.E(errors.FailedPrecondition, err,
-			"agent cannot create temporary file")
+		return "", errors.E(err, "agent cannot create temporary file")
 	}
 	defer os.Remove(tmpfile.Name())
 	defer tmpfile.Close()

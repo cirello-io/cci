@@ -21,7 +21,7 @@ import (
 	"os"
 	"os/exec"
 
-	"cirello.io/errors"
+	"cirello.io/cci/pkg/errors"
 )
 
 // Checkout clones and reset build directory to a given commit.

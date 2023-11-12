@@ -17,8 +17,8 @@ package sqlite3 // import "cirello.io/cci/pkg/infra/repositories/internal/sqlite
 import (
 	"time"
 
+	"cirello.io/cci/pkg/errors"
 	"cirello.io/cci/pkg/models"
-	"cirello.io/errors"
 	"github.com/jmoiron/sqlx"
 )
 

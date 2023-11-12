@@ -25,8 +25,8 @@ import (
 	"strings"
 	"time"
 
+	"cirello.io/cci/pkg/errors"
 	"cirello.io/cci/pkg/models"
-	"cirello.io/errors"
 )
 
 // Server implements the dashboard.
